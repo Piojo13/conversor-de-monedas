@@ -37,21 +37,6 @@ Parsea el JSON y obtiene: - `base_code` - `target_code` -
 Incluye filtrado explícito para validar que los currency codes devueltos
 coincidan con lo solicitado.
 
-## Código de Prueba (Opcional)
-
-Durante el desarrollo, se utilizó esta línea para probar que el filtrado
-funcionaba:
-
-``` java
-ApiClient api = new ApiClient();
-double tasa = api.obtenerTasa("USD", "XXX");
-System.out.println("Resultado prueba normal: " + tasa);
-```
-
-Esta prueba: - Intenta convertir USD → XXX (moneda inexistente) - Valida
-correctamente si el código es descartado - No es necesario dejarla en la
-versión final del proyecto
-
 ## Ejecución
 
 Compilar y ejecutar:
