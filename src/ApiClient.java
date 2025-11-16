@@ -3,20 +3,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ApiClient {
 
-    private final HttpClient client;
-    private final Gson gson = new Gson();
-
-    private static final String API_KEY = "a744e835b239367b9f8b1945";
+    private static final String API_KEY = "TU_API_KEY_AQUI";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/";
 
-    public ApiClient() {
-        this.client = HttpClient.newHttpClient();
-    }
+    private final HttpClient client = HttpClient.newHttpClient();
 
     public double obtenerTasa(String from, String to) {
         try {
@@ -27,17 +22,16 @@ public class ApiClient {
                     .GET()
                     .build();
 
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Convertimos toda la respuesta JSON a un objeto
-            JsonObject jsonResponse = gson.fromJson(response.body(), JsonObject.class);
+            // Parseo del JSON usando JsonParser
+            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
 
-            // Obtenemos la propiedad "conversion_rate"
-            return jsonResponse.get("conversion_rate").getAsDouble();
+            // Devuelve la tasa numérica
+            return json.get("conversion_rate").getAsDouble();
 
         } catch (Exception e) {
-            System.out.println("Error obteniendo datos de la API: " + e.getMessage());
+            System.out.println("Error al obtener datos de la API: " + e.getMessage());
             return -1;
         }
     }
